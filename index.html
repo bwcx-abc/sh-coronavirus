@@ -384,9 +384,23 @@
             buttonPosition: 'RB',    //定位按钮的停靠位置
             buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
             // zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
-
+            extensions: 'all'
         });
         map.addControl(geolocation);
+        AMap.event.addListener(geolocation, 'complete', function (result) {
+            // console.log(result)
+            geocoder.getAddress([result.position.lng, result.position.lat], function (status, result2) {
+                console.log(result, result2)
+                if (status === 'complete' && result2.regeocode) {
+                    currentLnglat = result.position;
+                    currentFormattedAddress = result2.regeocode.formattedAddress;
+                    document.getElementById("tipinput").value = currentFormattedAddress;
+                    changeAddressRadius();
+                } else {
+                    console.error('根据经纬度查询地址失败')
+                }
+            });
+        });
         // geolocation.getCurrentPosition(function (status, result) {
         //     // console.log(status, result)
         //     // if (status == 'complete') {
@@ -395,17 +409,16 @@
         //     //     onError(result)
         //     // }
         // });
-    });
+    })
+    ;
 
     document.getElementById('dateDom').onchange = selectChange
-
 
     function selectChange(dom) {
         dataArray = parseDateDataArray('');
         mass.setData(dataArray);
         changeAddressRadius();
     }
-
 
     function parseDateDataArray() {
         let dataArray = [];
