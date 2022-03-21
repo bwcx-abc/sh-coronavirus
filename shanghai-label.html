@@ -1,0 +1,465 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>上海疫情</title>
+    <link rel="icon" href="https://a.amap.com/jsapi_demos/static/images/mass0.png">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="//cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '232dfccc431d718743d994c49120c742'
+        }
+    </script>
+
+    <script src="//webapi.amap.com/maps?v=2.0&key=6daafbde66f3cb43c891f07f8bca542f&&plugin=AMap.Scale,AMap.HawkEye,AMap.ToolBar,AMap.ControlBar,AMap.PlaceSearch,AMap.AutoComplete,AMap.Adaptor,AMap.Geolocation"></script>
+    <script src="./markers.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #container {
+            height: 100%;
+        }
+
+        .input-card-left {
+            width: 300px;
+            top: 10px;
+            left: 10px;
+            bottom: auto;
+            /*display: none;*/
+        }
+
+        .input-card-search {
+            bottom: auto;
+            width: 250px;
+            top: 10px;
+        }
+
+        /*.amap-icon img {*/
+        /*    width: 25px;*/
+        /*    height: 34px;*/
+        /*}*/
+
+        .amap-marker-label {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid #00f;
+            background-color: #fff;
+            white-space: nowrap;
+            cursor: default;
+            padding: 3px;
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+        .info {
+            position: fixed;
+            margin: 0;
+            top: 0;
+            right: 0;
+            min-width: 0;
+            padding: 5px;
+        }
+
+        .tip {
+            position: fixed;
+            margin: 0 auto;
+            bottom: 24px;
+            right: 0;
+            left: 5px;
+            color: red;
+            display: inline-table;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 3px rgb(0 0 0 / 50%);
+            /*width: 20vw;*/
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class='input-card input-card-left'>
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" checked onclick="toggleScale(this)"/>比例尺-->
+    <!--    </div>-->
+
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" id="toolbar" checked onclick="toggleToolBar(this)"/>工具条-->
+    <!--    </div>-->
+
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" id="controlBar" checked onclick="toggleControlBar(this)"/>工具条方向盘-->
+    <!--    </div>-->
+
+    <div class="input-item">
+        搜索地名：
+        <input id="tipinput"
+               style="flex: 1 1 auto;
+    width: 1%;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);"/>
+    </div>
+    <div class="input-item">
+        指定日期：
+        <select id="dateDom">
+            <option value="">选择指定日期</option>
+        </select>
+    </div>
+    <div class="input-item">
+        只看确诊：
+        <input type="checkbox" id="diagnose" onclick="selectChange(this)"/>
+        &nbsp;&nbsp;
+        <div id="onlyDateDiv" style="display: none">
+            只看当天：
+            <input type="checkbox" id="onlyDate" onclick="selectChange(this)"/>
+        </div>
+    </div>
+
+</div>
+<!--<div class="input-card input-card-search">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <label>请搜索输入关键字：</label>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>-->
+
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+<div class="tip">数据仅供参考,和真实数据有一定差异</div>
+
+<script>
+
+    var allDates = Object.keys(markerDate);
+    var dateDom = document.getElementById('dateDom');
+    allDates.sort();
+    allDates.reverse();
+    allDates.forEach(function (dateItem) {
+        dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
+    });
+    //
+    var scale = new AMap.Scale({
+            visible: true
+        }),
+        toolBar = new AMap.ToolBar({
+            visible: true,
+            position: {
+                // top: '210px',
+                right: '16px',
+                bottom: '60px',
+                // width: '32px',
+            }
+        }),
+        controlBar = new AMap.ControlBar({
+            visible: false,
+            position: {
+                top: '110px',
+                right: '10px',
+                // bottom: '100px'
+            }
+        }),
+        overView = new AMap.HawkEye({
+            visible: false
+        }),
+        map = new AMap.Map("container", {
+            center: [121.448188, 31.126974],
+            zoom: 11,
+            showIndoorMap: false,
+            viewMode: '3D',
+        });
+    map.addControl(scale);
+    map.addControl(toolBar);
+    map.addControl(controlBar);
+    map.addControl(overView);
+
+    var overlappingOffset = 20;
+
+    var style = [{
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-1.png',
+        anchor: new AMap.Pixel(13, 25),
+        size: new AMap.Size(25, 34),
+        zIndex: 1,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-2.png',
+        anchor: new AMap.Pixel(13, 25),
+        size: new AMap.Size(25, 34),
+        zIndex: 2,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-3.png',
+        anchor: new AMap.Pixel(13, 25),
+        size: new AMap.Size(25, 34),
+        zIndex: 3,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-4.png',
+        anchor: new AMap.Pixel(13, 25),
+        size: new AMap.Size(25, 34),
+        zIndex: 4,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-5.png',
+        anchor: new AMap.Pixel(13, 25),
+        size: new AMap.Size(25, 34),
+        zIndex: 5,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png',
+        anchor: new AMap.Pixel(13 + overlappingOffset, 25 + overlappingOffset),
+        size: new AMap.Size(25, 34),
+        zIndex: 6,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
+        anchor: new AMap.Pixel(6, 6),
+        size: new AMap.Size(10, 10),
+        zIndex: 7,
+    }, {
+        url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
+        anchor: new AMap.Pixel(6 + overlappingOffset, 6 + overlappingOffset),
+        size: new AMap.Size(10, 10),
+        zIndex: 8,
+    }];
+    // https://a.amap.com/jsapi_demos/static/images/mass0.png
+
+    // var diagnose = getQueryVariable('diagnose');
+    // var onlyDate = getQueryVariable('onlyDate');
+    var dataArray = parseDateDataArray('');
+
+    // console.log(dataArray)
+    var mass = new AMap.MassMarks(dataArray, {
+        opacity: 1,
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+    });
+
+    var marker = new AMap.Marker({content: ' ', map: map});
+
+    // mass.on('mouseover', massEvent);
+    mass.on('click', massEvent);
+
+
+    mass.setMap(map);
+
+    map.on('click', function (e) {
+        // document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
+        marker.hide();
+        // console.log(e);
+    });
+
+    function massEvent(e) {
+        marker.setPosition(e.data.lnglat);
+        var dates = e.data.dates;
+        var allDate = '';
+        var dateStat = e.data.dateStat;
+        dates.forEach(function (item) {
+            allDate += "<li>" + item + " 数量：" + dateStat[item].count + " 确诊：" + (dateStat[item].diagnose || 0) + "</li>";
+        });
+        marker.setLabel({
+            content: '<div class="info"><div>地点：' + e.data.name + '</div> <div> 数量：' + e.data.count + '</div>' + (e.data.diagnose > 0 ? '<div> 确诊：' + e.data.diagnose + '</div>' : '') + ' <div><ul>' + allDate + '</ul></div></div>'
+        })
+        marker.show();
+    }
+
+    function toggleScale(checkbox) {
+        if (checkbox.checked) {
+            scale.show();
+        } else {
+            scale.hide();
+        }
+    }
+
+    function toggleToolBar(checkbox) {
+        if (checkbox.checked) {
+            showToolBar();
+        } else {
+            hideToolBar();
+        }
+    }
+
+    function toggleControlBar(checkbox) {
+        if (checkbox.checked) {
+            document.getElementById('controlBar').checked = true;
+            controlBar.show();
+        } else {
+            document.getElementById('controlBar').checked = false;
+            controlBar.hide();
+        }
+    }
+
+    function toggleOverViewShow(checkbox) {
+        if (checkbox.checked) {
+            overView.show();
+        } else {
+            overView.hide();
+        }
+    }
+
+    function showToolBar() {
+        document.getElementById('toolbar').checked = true;
+        toolBar.show();
+    }
+
+    function hideToolBar() {
+        document.getElementById('toolbar').checked = false;
+        toolBar.hide();
+    }
+
+    //输入提示
+    var autoOptions = {
+        input: "tipinput",
+        city: '上海'
+    };
+
+    AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
+        var auto = new AMap.AutoComplete(autoOptions);
+        var placeSearch = new AMap.PlaceSearch({
+            map: map,
+            citylimit: true,
+            panel: "panel",
+            pageSize: 2,
+        });  //构造地点查询类
+        auto.on("select", select);//注册监听，当选中某条记录时会触发
+        function select(e) {
+            placeSearch.setCity(e.poi.adcode);
+            placeSearch.search(e.poi.name);  //关键字查询查询
+        }
+
+        //
+        document.getElementById(autoOptions.input).onchange = function () {
+            if (!this.value || this.value === '') {
+                placeSearch.clear();
+            } else {
+                placeSearch.search(this.value);
+            }
+        };
+    });
+
+    //
+    AMap.plugin('AMap.Geolocation', function () {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            buttonPosition: 'RB',    //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            // zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function (status, result) {
+            console.log(status, result)
+            // if (status == 'complete') {
+            //     onComplete(result)
+            // } else {
+            //     onError(result)
+            // }
+        });
+    });
+
+    document.getElementById('dateDom').onchange = selectChange
+
+
+    function selectChange(dom) {
+        if (dom.id === 'diagnose') {
+            // console.log($("#diagnose").length, $("#diagnose").is(':checked'))
+
+            // console.log($diagnose.is(':checked'))
+            // $diagnose.is(':checked') ? $diagnose.prop("checked", false) : $diagnose.prop("checked", true);
+            // document.getElementById('diagnose').checked = ;
+            // console.log(dom.checked)
+        } else {
+
+        }
+        mass.setData(parseDateDataArray());
+    }
+
+
+    function parseDateDataArray() {
+        let dataArray = [];
+        var markersArray;
+        var date = document.getElementById('dateDom').value;
+
+        document.getElementById('onlyDateDiv').style = date ? 'display: show;' : 'display: none;';
+
+        var diagnose = document.getElementById('diagnose').checked;
+        var onlyDate = document.getElementById('onlyDate').checked;
+        if (onlyDate && date) {
+            markersArray = markerDate[date];
+            //
+        } else {
+            markersArray = markers;
+        }
+
+        markersArray.forEach(function (marker) {
+            if (date && !marker.dates.includes(date)) {
+                return;
+            }
+            if (diagnose) {
+                if (marker.diagnose > 0) {
+                    dataArray.push({
+                        lnglat: marker.position,
+                        name: marker.name,
+                        count: marker.count,
+                        dates: marker.dates,
+                        diagnose: marker.diagnose,
+                        dateStat: marker.dateStat,
+                        style: marker.diagnose > 5 ? 5 : marker.diagnose - 1
+                    })
+                }
+            } else {
+                dataArray.push({
+                    lnglat: marker.position,
+                    name: marker.name,
+                    count: marker.count,
+                    dates: marker.dates,
+                    diagnose: marker.diagnose,
+                    dateStat: marker.dateStat,
+                    style: marker.count > 5 ? 5 : marker.count - 1
+                })
+                if (marker.diagnose > 0) {
+                    dataArray.push({
+                        lnglat: marker.position,
+                        name: marker.name + '-1',
+                        count: marker.count,
+                        dates: marker.dates,
+                        diagnose: marker.diagnose,
+                        dateStat: marker.dateStat,
+                        style: marker.count > 5 ? 7 : 6
+                    })
+                }
+            }
+        })
+        return dataArray;
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3c54f24153066f5742666714e9675184";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>

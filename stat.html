@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>上海疫情-统计</title>
+    <link rel="icon" href="https://a.amap.com/jsapi_demos/static/images/mass0.png">
+</head>
+<style>
+    .item {
+        /*position: absolute;*/
+        left: 0;
+        right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        width: 90vw
+    }
+</style>
+<body>
+<div class="input-item">
+    指定日期：
+    <select id="dateDom" style="flex: 1 1 auto;
+    width: 200px;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);">
+        <option value="">选择指定日期</option>
+    </select>
+</div>
+<!--容器-->
+<div id="addressStat" class="item"></div>
+<div id="ageStat" class="item"></div>
+<div class="item">
+    <div id="sexStat" style="height: 100%;width: 50%;display: inline-block;float: left;"></div>
+    <div id="typeStat" style="height: 100%;width: 50%;display: inline-block;float: left;"></div>
+</div>
+
+<div id="dateStat" class="item"></div>
+<script src="./stat.js"></script>
+<!--导入必要js文件-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.1/dist/echarts.js"></script>
+<script type="text/javascript">
+
+    var dateDom = document.getElementById('dateDom');
+    dateStatX.reverse();
+    dateStatX.forEach(function (dateItem) {
+        dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
+    });
+    dateStatX.reverse();
+
+    document.getElementById('dateDom').onchange = function () {
+        var date = document.getElementById('dateDom').value;
+        if (!date) {
+            changeData(window);
+        } else {
+            changeData(dateMap[date])
+        }
+    }
+
+
+    var addressStatEcharts = echarts.init(document.getElementById("addressStat"));
+    //
+    var ageStatEcharts = echarts.init(document.getElementById("ageStat"));
+    //
+    var sexStatEcharts = echarts.init(document.getElementById("sexStat"));
+    //
+    var typeStatEcharts = echarts.init(document.getElementById("typeStat"));
+    //
+    var dateStatEcharts = echarts.init(document.getElementById("dateStat"));
+
+    changeData(window);
+
+    function changeData(data) {
+        addressStatEcharts.setOption({
+            title: {
+                text: '区域统计',
+                subtext: '数据仅供参考,和真实数据有一定差异'
+            },
+            legend: {},
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: data['addressStatX'],
+                axisLabel: {
+                    interval: 0,
+                    rotate: 40
+                }
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [{
+                data: data['addressStatY'],
+                // barWidth: 15,
+                // splitNumber: 5,
+                type: 'bar',
+                // barCateGoryGap: '20%',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(220, 220, 220, 0.8)'
+                }
+            }]
+        }, true);
+        //
+        ageStatEcharts.setOption({
+            title: {
+                text: '年龄统计',
+                subtext: '数据仅供参考,和真实数据有一定差异'
+            },
+            legend: {},
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: data['ageStatX']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                data: data['ageStatY'],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(220, 220, 220, 0.8)'
+                }
+            }]
+        }, true);
+        sexStatEcharts.setOption({
+            title: {
+                text: '性别统计',
+                subtext: '数据仅供参考,和真实数据有一定差异',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            // legend: {
+            //     orient: 'vertical',
+            //     left: 'left'
+            // },
+            series: [
+                {
+                    name: '性别',
+                    type: 'pie',
+                    radius: '50%',
+                    data: data['sexStat'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }, true);
+        typeStatEcharts.setOption({
+            title: {
+                text: '确诊类型统计',
+                subtext: '数据仅供参考,和真实数据有一定差异',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            // legend: {
+            //     orient: 'vertical',
+            //     left: 'left'
+            // },
+            series: [
+                {
+                    name: '确诊类型',
+                    type: 'pie',
+                    radius: '50%',
+                    data: data['typeStat'],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        }, true);
+        dateStatEcharts.setOption({
+            title: {
+                text: '日期统计',
+                subtext: '数据仅供参考,和真实数据有一定差异'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            xAxis: {
+                type: 'category',
+                data: data['dateStatX']
+            },
+            legend: {
+                data: ['病例数', '确诊数', '无症状数', '涉及场所']
+            },
+            yAxis: [{
+                type: 'value'
+            }],
+            series: [
+                {
+                    name: '确诊数',
+                    type: 'bar',
+                    data: data['dateDiagnoseStatY']
+                }, {
+                    name: '无症状数',
+                    type: 'bar',
+                    data: data['dateAsymptomaticStatY']
+                }, {
+                    name: '病例数',
+                    type: 'line',
+                    data: data['dateStatY'],
+                }, {
+                    name: '涉及场所',
+                    type: 'line',
+                    data: data['dateAddressY'],
+                }
+            ]
+        });
+        document.getElementById('dateStat').style = data['dateStatX'].length > 1 ? 'display: show;' : 'display: none;';
+    }
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3c54f24153066f5742666714e9675184";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>

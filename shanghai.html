@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>上海疫情</title>
+    <link rel="icon" href="https://a.amap.com/jsapi_demos/static/images/mass0.png">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="//cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '232dfccc431d718743d994c49120c742'
+        }
+    </script>
+
+    <script src="//webapi.amap.com/maps?v=2.0&key=6daafbde66f3cb43c891f07f8bca542f&&plugin=AMap.Scale,AMap.HawkEye,AMap.ToolBar,AMap.ControlBar,AMap.PlaceSearch,AMap.AutoComplete"></script>
+    <script src="./markers.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #container {
+            height: 100%;
+        }
+
+        .input-card {
+            width: 150px;
+            top: 10px;
+            left: 10px;
+            bottom: auto;
+            display: none;
+        }
+
+        .amap-icon img {
+            width: 25px;
+            height: 34px;
+        }
+
+        .amap-marker-label {
+            border: 0;
+            background-color: transparent;
+        }
+
+        .info {
+            position: relative;
+            margin: 0;
+            top: 0;
+            right: 0;
+            min-width: 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class='input-card'>
+    <div class="input-item">
+        <input type="checkbox" checked onclick="toggleScale(this)"/>比例尺
+    </div>
+
+    <div class="input-item">
+        <input type="checkbox" id="toolbar" checked onclick="toggleToolBar(this)"/>工具条
+    </div>
+
+    <div class="input-item">
+        <input type="checkbox" id="controlBar" checked onclick="toggleControlBar(this)"/>工具条方向盘
+    </div>
+
+    <div class="input-item">
+        <input type="checkbox" id="overview" checked onclick="toggleOverViewShow(this)"/>显示鹰眼
+    </div>
+</div>
+<div id="myPageTop">
+    <table>
+        <tr>
+            <td>
+                <label>请输入关键字：</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="tipinput"/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    //
+    var scale = new AMap.Scale({
+            visible: true
+        }),
+        toolBar = new AMap.ToolBar({
+            visible: true,
+            position: {
+                top: '210px',
+                right: '40px'
+            }
+        }),
+        controlBar = new AMap.ControlBar({
+            visible: true,
+            position: {
+                top: '110px',
+                right: '10px'
+            }
+        }),
+        overView = new AMap.HawkEye({
+            visible: true
+        }),
+        map = new AMap.Map("container", {
+            center: [121.448188, 31.126974],
+            zoom: 11,
+        });
+    map.addControl(scale);
+    map.addControl(toolBar);
+    map.addControl(controlBar);
+    map.addControl(overView);
+
+    // 添加一些分布不均的点到地图上,地图上添加三个点标记，作为参照
+    markers.forEach(function (marker) {
+        var markerItem = new AMap.Marker({
+            map: map,
+            icon: marker.icon,
+            position: [marker.position[0], marker.position[1]],
+            offset: new AMap.Pixel(-13, -30),
+            anchor: 'bottom-center',
+        });
+        if (marker.count > 5) {
+            markerItem.setTitle(marker.name);
+            markerItem.setLabel({
+                direction: 'right',
+                offset: new AMap.Pixel(10, 0),  //设置文本标注偏移量
+                content: "<div class='info'>" + marker.count + "</div>", //设置文本标注内容
+            });
+            console.log(marker.name + "  " + marker.count)
+        }
+    });
+
+
+    map.setFitView();
+
+    function toggleScale(checkbox) {
+        if (checkbox.checked) {
+            scale.show();
+        } else {
+            scale.hide();
+        }
+    }
+
+    function toggleToolBar(checkbox) {
+        if (checkbox.checked) {
+            showToolBar();
+        } else {
+            hideToolBar();
+        }
+    }
+
+    function toggleControlBar(checkbox) {
+        if (checkbox.checked) {
+            document.getElementById('controlBar').checked = true;
+            controlBar.show();
+        } else {
+            document.getElementById('controlBar').checked = false;
+            controlBar.hide();
+        }
+    }
+
+    function toggleOverViewShow(checkbox) {
+        if (checkbox.checked) {
+            overView.show();
+        } else {
+            overView.hide();
+        }
+    }
+
+    function showToolBar() {
+        document.getElementById('toolbar').checked = true;
+        toolBar.show();
+    }
+
+    function hideToolBar() {
+        document.getElementById('toolbar').checked = false;
+        toolBar.hide();
+    }
+
+    //输入提示
+    var autoOptions = {
+        input: "tipinput"
+    };
+
+    AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
+        var auto = new AMap.AutoComplete(autoOptions);
+        var placeSearch = new AMap.PlaceSearch({
+            map: map
+        });  //构造地点查询类
+        auto.on("select", select);//注册监听，当选中某条记录时会触发
+        function select(e) {
+            placeSearch.setCity(e.poi.adcode);
+            placeSearch.search(e.poi.name);  //关键字查询查询
+        }
+    });
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3c54f24153066f5742666714e9675184";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>

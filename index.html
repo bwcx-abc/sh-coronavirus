@@ -1,0 +1,459 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>上海疫情-发布</title>
+    <link rel="icon" href="https://a.amap.com/jsapi_demos/static/images/mass0.png">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="//cache.amap.com/lbs/static/es5.min.js"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: '232dfccc431d718743d994c49120c742'
+        }
+    </script>
+
+    <script src="//webapi.amap.com/maps?v=2.0&key=6daafbde66f3cb43c891f07f8bca542f&&plugin=AMap.Geocoder,AMap.Scale,AMap.HawkEye,AMap.ToolBar,AMap.ControlBar,AMap.PlaceSearch,AMap.AutoComplete,AMap.Adaptor,AMap.Geolocation"></script>
+    <script src="./markers-area.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        #container {
+            height: 100%;
+        }
+
+        .input-card-left {
+            width: 300px;
+            top: 10px;
+            left: 10px;
+            bottom: auto;
+            /*display: none;*/
+        }
+
+        .input-card-search {
+            bottom: auto;
+            width: 250px;
+            top: 10px;
+        }
+
+        /*.amap-icon img {*/
+        /*    width: 25px;*/
+        /*    height: 34px;*/
+        /*}*/
+
+        .amap-marker-label {
+            position: absolute;
+            z-index: 2;
+            border: 1px solid red;
+            border-radius: 5px;
+            background-color: #fff;
+            white-space: nowrap;
+            cursor: default;
+            padding: 3px;
+            font-size: 12px;
+            line-height: 14px;
+        }
+
+        .info {
+            position: fixed;
+            margin: 0;
+            top: 0;
+            right: 0;
+            min-width: 0;
+            padding: 5px;
+        }
+
+        .tip {
+            position: fixed;
+            margin: 0 auto;
+            bottom: 24px;
+            right: 0;
+            left: 5px;
+            color: red;
+            display: inline-table;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 3px rgb(0 0 0 / 50%);
+            /*width: 20vw;*/
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<div class='input-card input-card-left'>
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" checked onclick="toggleScale(this)"/>比例尺-->
+    <!--    </div>-->
+
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" id="toolbar" checked onclick="toggleToolBar(this)"/>工具条-->
+    <!--    </div>-->
+
+    <!--    <div class="input-item">-->
+    <!--        <input type="checkbox" id="controlBar" checked onclick="toggleControlBar(this)"/>工具条方向盘-->
+    <!--    </div>-->
+
+    <div class="input-item">
+        搜索地名：
+        <input id="tipinput" onchange="updateAddress()"
+               style="flex: 1 1 auto;
+    width: 1%;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);"/>
+    </div>
+    <div class="input-item">
+        指定日期：
+        <select id="dateDom">
+            <option value="">选择指定日期</option>
+        </select>
+    </div>
+    <div class="input-item">
+        &nbsp;&nbsp;
+        <div id="onlyDateDiv" style="display: none">
+            只看当天：
+            <input type="checkbox" id="onlyDate" onclick="selectChange(this)"/>
+        </div>
+    </div>
+    <div class="input-item">
+        选择半径：<input type="range" id="radius" min="0.5" max="5" step="0.5" onchange="updateRadius()" value="3"/>
+        <span id="radiusText">3</span>公里
+    </div>
+
+</div>
+<!--<div class="input-card input-card-search">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <label>请搜索输入关键字：</label>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>-->
+
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+<div class="tip">数据仅供参考,和真实数据有一定差异</div>
+
+<script>
+
+    var allDates = Object.keys(markerDate);
+    var dateDom = document.getElementById('dateDom');
+    allDates.sort();
+    allDates.reverse();
+    allDates.forEach(function (dateItem) {
+        dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
+    });
+    //
+    var scale = new AMap.Scale({
+            visible: true
+        }),
+        toolBar = new AMap.ToolBar({
+            visible: true,
+            position: {
+                // top: '210px',
+                right: '16px',
+                bottom: '60px',
+                // width: '32px',
+            }
+        }),
+        controlBar = new AMap.ControlBar({
+            visible: false,
+            position: {
+                top: '110px',
+                right: '10px',
+                // bottom: '100px'
+            }
+        }),
+        overView = new AMap.HawkEye({
+            visible: false
+        }),
+        map = new AMap.Map("container", {
+            center: [121.448188, 31.126974],
+            zoom: 11,
+            showIndoorMap: false,
+            viewMode: '3D',
+        });
+    map.addControl(scale);
+    map.addControl(toolBar);
+    map.addControl(controlBar);
+    map.addControl(overView);
+
+
+    var iconBase64 = 'data:image/png;base64,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';
+
+    var style = [{
+        url: iconBase64,
+        anchor: new AMap.Pixel(11, 30),
+        size: new AMap.Size(30, 30),
+        zIndex: 1,
+    }];
+    // https://a.amap.com/jsapi_demos/static/images/mass0.png
+
+    // var diagnose = getQueryVariable('diagnose');
+    // var onlyDate = getQueryVariable('onlyDate');
+    var dataArray = parseDateDataArray('');
+
+    // console.log(dataArray)
+    var mass = new AMap.MassMarks(dataArray, {
+        opacity: 1,
+        zIndex: 111,
+        cursor: 'pointer',
+        style: style
+    });
+
+    var marker = new AMap.Marker({content: ' ', map: map});
+
+    // mass.on('mouseover', massEvent);
+    mass.on('click', massEvent);
+    mass.on('mouseover', massEvent);
+    mass.on('mouseout', function () {
+        marker.hide();
+    })
+
+
+    mass.setMap(map);
+
+    map.on('click', function (e) {
+        // document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
+        marker.hide();
+        // console.log(e);
+    });
+
+    function massEvent(e) {
+        marker.setPosition(e.data.lnglat);
+        var dates = e.data.dates;
+        var allDate = '';
+        dates.forEach(function (item) {
+            allDate += "<li>" + item + "</li>";
+        });
+        marker.setLabel({
+            content: '<div class="info"><div>地点：' + e.data.name + '</div> <ul>' + allDate + '</ul></div></div>'
+        })
+        marker.show();
+    }
+
+    function toggleScale(checkbox) {
+        if (checkbox.checked) {
+            scale.show();
+        } else {
+            scale.hide();
+        }
+    }
+
+    function toggleToolBar(checkbox) {
+        if (checkbox.checked) {
+            showToolBar();
+        } else {
+            hideToolBar();
+        }
+    }
+
+    function toggleControlBar(checkbox) {
+        if (checkbox.checked) {
+            document.getElementById('controlBar').checked = true;
+            controlBar.show();
+        } else {
+            document.getElementById('controlBar').checked = false;
+            controlBar.hide();
+        }
+    }
+
+    function toggleOverViewShow(checkbox) {
+        if (checkbox.checked) {
+            overView.show();
+        } else {
+            overView.hide();
+        }
+    }
+
+    function showToolBar() {
+        document.getElementById('toolbar').checked = true;
+        toolBar.show();
+    }
+
+    function hideToolBar() {
+        document.getElementById('toolbar').checked = false;
+        toolBar.hide();
+    }
+
+    //
+    // //输入提示
+    // var autoOptions = {
+    //     input: "tipinput",
+    //     city: '上海'
+    // };
+    //
+    //
+    var geocoder = new AMap.Geocoder({
+        city: "021",
+    });
+
+    var circle = new AMap.Circle({
+        center: [121.485874, 31.142752],
+        radius: 3000, //半径
+        borderWeight: 3,
+        strokeColor: "#FF33FF",
+        // strokeOpacity: 1,
+        strokeWeight: 6,
+        strokeOpacity: 0.2,
+        fillOpacity: 0.4,
+        strokeStyle: 'dashed',
+        strokeDasharray: [10, 10],
+        // 线样式还支持 'dashed'
+        fillColor: '#1791fc',
+        zIndex: 500,
+    });
+
+    map.add(circle);
+    circle.hide();
+
+    var currentMarker = new AMap.Marker();
+    var currentLnglat;
+    var currentFormattedAddress;
+
+    function updateAddress() {
+        var inputAddress = document.getElementById("tipinput").value;
+        if (inputAddress.trim() === "") {
+            circle.hide();
+            currentMarker.hide();
+            return;
+        }
+        geocoder.getLocation(inputAddress, function (status, result) {
+            console.log(status, result);
+            if (status === 'complete' && result.geocodes.length) {
+                currentLnglat = result.geocodes[0].location
+                currentFormattedAddress = result.geocodes[0].formattedAddress;
+                changeAddressRadius();
+            } else {
+                console.log('根据地址查询位置失败')
+                //log.error('根据地址查询位置失败');
+            }
+        });
+    }
+
+    function changeAddressRadius() {
+        if (!currentLnglat) {
+            return
+        }
+        var radius = document.getElementById("radius").value;
+        // filterRange(radius, lnglat, formattedAddress);
+        currentMarker.setPosition(currentLnglat);
+        map.add(currentMarker);
+        circle.setCenter(currentLnglat);
+        circle.setRadius(radius * 1000);
+        circle.show();
+        currentMarker.show();
+        // map.setFitView(circle);
+        map.setFitView([currentMarker], false, [60, 60, 60, 60], 14);
+        //
+        var confirmArray = [];
+        var minDis = 10000000000;
+        var arr = [2, 8, 5, 0, 5, 2, 6, 7, 2]
+        dataArray.filter(c => {
+            // console.log(currentLnglat.lng, currentLnglat.lat, c.lnglat)
+            var dis = AMap.GeometryUtil.distance([currentLnglat.lng, currentLnglat.lat], c.lnglat);
+            minDis = minDis < dis ? minDis : dis;
+            return dis <= radius * 1000;
+        }).forEach(c => {
+            if (confirmArray.indexOf(c.name) === -1) {
+                confirmArray.push(c.name)
+            }
+        });
+        // console.log(confirmArray)
+        minDis = Math.round(minDis)
+        currentMarker.setLabel({
+            direction: 'top',
+            // offset: new AMap.Pixel(100, 100),  //设置文本标注偏移量
+            content: "<div>" + currentFormattedAddress + "：<br>该地区 " + radius + " 公里范围内一共有" + confirmArray.length + "病例场所 </br> 最近的距离是： " + minDis + "米</div>",
+            //设置文本标注内容
+        });
+    }
+
+    //
+    AMap.plugin('AMap.Geolocation', function () {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            buttonPosition: 'RB',    //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            // zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function (status, result) {
+            // console.log(status, result)
+            // if (status == 'complete') {
+            //     onComplete(result)
+            // } else {
+            //     onError(result)
+            // }
+        });
+    });
+
+    document.getElementById('dateDom').onchange = selectChange
+
+
+    function selectChange(dom) {
+        dataArray = parseDateDataArray('');
+        mass.setData(dataArray);
+        changeAddressRadius();
+    }
+
+
+    function parseDateDataArray() {
+        let dataArray = [];
+        var markersArray;
+        var date = document.getElementById('dateDom').value;
+
+        document.getElementById('onlyDateDiv').style = date ? 'display: show;' : 'display: none;';
+
+
+        var onlyDate = document.getElementById('onlyDate').checked;
+        if (onlyDate && date) {
+            markersArray = markerDate[date];
+            //
+        } else {
+            markersArray = markers;
+        }
+
+        markersArray.forEach(function (marker) {
+            if (date && !marker.dates.includes(date)) {
+                return;
+            }
+            dataArray.push({
+                lnglat: marker.position,
+                name: marker.name,
+                dates: marker.dates,
+                style: 1
+            })
+
+        })
+        return dataArray;
+    }
+
+
+    function updateRadius() {
+        document.getElementById("radiusText").innerText = document.getElementById("radius").value;
+        changeAddressRadius();
+    }
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3c54f24153066f5742666714e9675184";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</body>
+</html>
