@@ -10,12 +10,24 @@
 <style>
     .item {
         /*position: absolute;*/
+        padding-top: 20px;
         left: 0;
         right: 0;
         margin-left: auto;
         margin-right: auto;
         height: 300px;
-        width: 90vw
+        width: 95vw;
+        border-bottom: 1px #cccccc dashed;
+    }
+
+    .input-item {
+        position: fixed;
+        height: 45px;
+        background-color: #fff;
+        z-index: 10000;
+        top: 0;
+        width: 100%;
+
     }
 </style>
 <body>
@@ -25,7 +37,10 @@
     width: 200px;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);">
         <option value="">选择指定日期</option>
     </select>
+
+    <div style="display: inline-block;color: red;">数据仅供参考,和真实数据有一定差异</div>
 </div>
+<div style="height: 45px"></div>
 <!--容器-->
 <div id="addressStat" class="item"></div>
 <div id="ageStat" class="item"></div>
@@ -73,7 +88,8 @@
         addressStatEcharts.setOption({
             title: {
                 text: '区域统计',
-                subtext: '数据仅供参考,和真实数据有一定差异'
+                // subtext: '数据仅供参考,和真实数据有一定差异'
+                x: 'center',
             },
             legend: {},
             tooltip: {
@@ -81,6 +97,13 @@
                 axisPointer: {
                     type: 'shadow'
                 }
+            },
+            grid: {
+                // top: '10%',
+                left: '0%',
+                right: '0%',
+                bottom: '3%',
+                containLabel: true
             },
             xAxis: {
                 type: 'category',
@@ -109,9 +132,17 @@
         ageStatEcharts.setOption({
             title: {
                 text: '年龄统计',
-                subtext: '数据仅供参考,和真实数据有一定差异'
+                // subtext: '数据仅供参考,和真实数据有一定差异'
+                x: 'center',
             },
             legend: {},
+            grid: {
+                // top: '10%',
+                left: '0%',
+                right: '0%',
+                bottom: '3%',
+                containLabel: true
+            },
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -137,7 +168,7 @@
         sexStatEcharts.setOption({
             title: {
                 text: '性别统计',
-                subtext: '数据仅供参考,和真实数据有一定差异',
+                // subtext: '数据仅供参考,和真实数据有一定差异',
                 left: 'center'
             },
             tooltip: {
@@ -147,6 +178,13 @@
             //     orient: 'vertical',
             //     left: 'left'
             // },
+            grid: {
+                // top: '10%',
+                left: '0%',
+                right: '0%',
+                bottom: '3%',
+                containLabel: true
+            },
             series: [
                 {
                     name: '性别',
@@ -166,7 +204,7 @@
         typeStatEcharts.setOption({
             title: {
                 text: '确诊类型统计',
-                subtext: '数据仅供参考,和真实数据有一定差异',
+                // subtext: '数据仅供参考,和真实数据有一定差异',
                 left: 'center'
             },
             tooltip: {
@@ -176,6 +214,13 @@
             //     orient: 'vertical',
             //     left: 'left'
             // },
+            grid: {
+                // top: '10%',
+                left: '0%',
+                right: '0%',
+                bottom: '3%',
+                containLabel: true
+            },
             series: [
                 {
                     name: '确诊类型',
@@ -195,7 +240,10 @@
         dateStatEcharts.setOption({
             title: {
                 text: '日期统计',
-                subtext: '数据仅供参考,和真实数据有一定差异'
+                // subtext: '数据仅供参考,和真实数据有一定差异'
+                // x: 'center',
+                // y: '7px',
+                // textAlign: 'center'
             },
             tooltip: {
                 trigger: 'axis',
@@ -206,9 +254,20 @@
                     }
                 }
             },
+            grid: {
+                // top: '10%',
+                left: '0%',
+                right: '0%',
+                bottom: '3%',
+                containLabel: true
+            },
             xAxis: {
                 type: 'category',
-                data: data['dateStatX']
+                data: data['dateStatX'],
+                axisLabel: {
+                    interval: 0,
+                    rotate: 40
+                }
             },
             legend: {
                 data: ['病例数', '确诊数', '无症状数', '涉及场所']
