@@ -74,11 +74,12 @@
 <script type="text/javascript">
 
     var dateDom = document.getElementById('dateDom');
-    dateStatX.reverse();
-    dateStatX.forEach(function (dateItem) {
+    var dateArray = Object.keys(dateMap);
+    dateArray.sort();
+    dateArray.reverse();
+    dateArray.forEach(function (dateItem) {
         dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
     });
-    dateStatX.reverse();
 
     document.getElementById('dateDom').onchange = function () {
         var date = document.getElementById('dateDom').value;
