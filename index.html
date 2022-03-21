@@ -107,22 +107,23 @@
                style="flex: 1 1 auto;
     width: 1%;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);"/>
     </div>
+    <div class="input-item" id="radiusDiv" style="display: none;">
+        选择半径：<input type="range" id="radius" min="0.5" max="5" step="0.5" onchange="updateRadius()" value="3"/>
+        <span id="radiusText">3</span>公里
+    </div>
     <div class="input-item">
         指定日期：
         <select id="dateDom">
             <option value="">选择指定日期</option>
         </select>
     </div>
-    <div class="input-item" id="onlyDateDiv" style="display: none">
-        <div>
-            只看当天：
-            <input type="checkbox" id="onlyDate" onclick="selectChange(this)"/>
-        </div>
-    </div>
-    <div class="input-item">
-        选择半径：<input type="range" id="radius" min="0.5" max="5" step="0.5" onchange="updateRadius()" value="3"/>
-        <span id="radiusText">3</span>公里
-    </div>
+    <!--    <div class="input-item" id="onlyDateDiv" style="display: none">-->
+    <!--        <div>-->
+    <!--            只看当天：-->
+    <!--            <input type="checkbox" id="onlyDate" onclick="selectChange(this)"/>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
     <div class="input-item">
         <a href="stat.html">查看统计图表</a>
     </div>
@@ -183,6 +184,7 @@
             zoom: 11,
             showIndoorMap: false,
             viewMode: '3D',
+            resizeEnable: true
         });
     map.addControl(scale);
     map.addControl(toolBar);
@@ -300,12 +302,12 @@
     });
 
     var circle = new AMap.Circle({
-        center: [121.485874, 31.142752],
+        center: [121.448188, 31.126974],
         radius: 3000, //半径
         borderWeight: 3,
         strokeColor: "#FF33FF",
         // strokeOpacity: 1,
-        strokeWeight: 6,
+        strokeWeight: 4,
         strokeOpacity: 0.2,
         fillOpacity: 0.4,
         strokeStyle: 'dashed',
@@ -324,11 +326,14 @@
 
     function updateAddress() {
         var inputAddress = document.getElementById("tipinput").value;
+
         if (inputAddress.trim() === "") {
             circle.hide();
             currentMarker.hide();
+            document.getElementById('radiusDiv').style = 'display: none;';
             return;
         }
+        document.getElementById('radiusDiv').style = 'display: show;';
         geocoder.getLocation(inputAddress, function (status, result) {
             console.log(status, result);
             if (status === 'complete' && result.geocodes.length) {
@@ -355,15 +360,15 @@
         circle.show();
         currentMarker.show();
         // map.setFitView(circle);
-        map.setFitView([currentMarker], false, [60, 60, 60, 60], 14);
+        map.setFitView([currentMarker], true, [0, 0, 0, 0], map.getZoom());
         //
         var confirmArray = [];
         var minDis = 10000000000;
-        var arr = [2, 8, 5, 0, 5, 2, 6, 7, 2]
         dataArray.filter(c => {
             // console.log(currentLnglat.lng, currentLnglat.lat, c.lnglat)
             var dis = AMap.GeometryUtil.distance([currentLnglat.lng, currentLnglat.lat], c.lnglat);
-            minDis = minDis < dis ? minDis : dis;
+            minDis = Math.min(dis, minDis);
+            //minDis < dis ? minDis : dis;
             return dis <= radius * 1000;
         }).forEach(c => {
             if (confirmArray.indexOf(c.name) === -1) {
@@ -399,6 +404,7 @@
                     currentLnglat = result.position;
                     currentFormattedAddress = result2.regeocode.formattedAddress;
                     document.getElementById("tipinput").value = currentFormattedAddress;
+                    document.getElementById('radiusDiv').style = 'display: show;';
                     changeAddressRadius();
                 } else {
                     console.error('根据经纬度查询地址失败')
@@ -426,24 +432,13 @@
 
     function parseDateDataArray() {
         let dataArray = [];
-        var markersArray;
         var date = document.getElementById('dateDom').value;
-
-        document.getElementById('onlyDateDiv').style = date ? 'display: show;' : 'display: none;';
-
-
-        var onlyDate = document.getElementById('onlyDate').checked;
-        if (onlyDate && date) {
-            markersArray = markerDate[date];
-            //
-        } else {
-            markersArray = markers;
-        }
+        var markersArray = date ? markerDate[date] : markers;
 
         markersArray.forEach(function (marker) {
-            if (date && !marker.dates.includes(date)) {
-                return;
-            }
+            // if (date && !marker.dates.includes(date)) {
+            //     return;
+            // }
             dataArray.push({
                 lnglat: marker.position,
                 name: marker.name,
