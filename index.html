@@ -223,7 +223,7 @@
     map.on('click', function (e) {
         // document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat()
         marker.hide();
-        // console.log(e);
+        console.log(e);
     });
 
     function massEvent(e) {
@@ -387,14 +387,14 @@
 
         });
         map.addControl(geolocation);
-        geolocation.getCurrentPosition(function (status, result) {
-            // console.log(status, result)
-            // if (status == 'complete') {
-            //     onComplete(result)
-            // } else {
-            //     onError(result)
-            // }
-        });
+        // geolocation.getCurrentPosition(function (status, result) {
+        //     // console.log(status, result)
+        //     // if (status == 'complete') {
+        //     //     onComplete(result)
+        //     // } else {
+        //     //     onError(result)
+        //     // }
+        // });
     });
 
     document.getElementById('dateDom').onchange = selectChange
