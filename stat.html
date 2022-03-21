@@ -8,6 +8,11 @@
     <link rel="icon" href="https://a.amap.com/jsapi_demos/static/images/mass0.png">
 </head>
 <style>
+    body {
+        margin: 0;
+        /*padding: 5px;*/
+    }
+
     .item {
         /*position: absolute;*/
         padding-top: 20px;
@@ -21,26 +26,39 @@
     }
 
     .input-item {
+        padding-left: 5px;
+        font-size: 12px;
+        padding-top: 5px;
+    }
+
+    .fixed-top {
         position: fixed;
-        height: 45px;
+        height: 65px;
         background-color: #fff;
         z-index: 10000;
         top: 0;
         width: 100%;
-
+        box-shadow: 0 0 3px rgb(0 0 0 / 50%);
     }
 </style>
 <body>
-<div class="input-item">
-    指定日期：
-    <select id="dateDom" style="flex: 1 1 auto;
-    width: 200px;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);">
-        <option value="">选择指定日期</option>
-    </select>
+<div class="fixed-top">
 
-    <div style="display: inline-block;color: red;">数据仅供参考,和真实数据有一定差异</div>
+
+    <div class="input-item">
+        指定日期：
+        <select id="dateDom" style="flex: 1 1 auto;
+    width: 200px;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);">
+            <option value="">选择指定日期</option>
+        </select>
+    </div>
+    <div class="input-item">
+        <a href="index.html">查看分布地图</a>
+        &nbsp;&nbsp;
+        <div style="display: inline-block;color: red;  font-weight: bold;">数据仅供参考,和真实数据有一定差异</div>
+    </div>
 </div>
-<div style="height: 45px"></div>
+<div style="height: 65px"></div>
 <!--容器-->
 <div id="addressStat" class="item"></div>
 <div id="ageStat" class="item"></div>
