@@ -320,9 +320,16 @@
     map.add(circle);
     circle.hide();
 
-    var currentMarker = new AMap.Marker();
+    var currentMarker = new AMap.Marker({
+        draggable: true
+    });
     var currentLnglat;
     var currentFormattedAddress;
+
+    currentMarker.on('dragend', function (e) {
+        // console.log(e);
+        autoChangePosition(e.lnglat);
+    });
 
     function updateAddress() {
         var inputAddress = document.getElementById("tipinput").value;
@@ -393,23 +400,13 @@
             buttonPosition: 'RB',    //定位按钮的停靠位置
             buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
             // zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
-            extensions: 'all'
+            extensions: 'all',
+            showCircle: false
         });
         map.addControl(geolocation);
         AMap.event.addListener(geolocation, 'complete', function (result) {
             // console.log(result)
-            geocoder.getAddress([result.position.lng, result.position.lat], function (status, result2) {
-                console.log(result, result2)
-                if (status === 'complete' && result2.regeocode) {
-                    currentLnglat = result.position;
-                    currentFormattedAddress = result2.regeocode.formattedAddress;
-                    document.getElementById("tipinput").value = currentFormattedAddress;
-                    document.getElementById('radiusDiv').style = 'display: show;';
-                    changeAddressRadius();
-                } else {
-                    console.error('根据经纬度查询地址失败')
-                }
-            });
+            autoChangePosition(result.position);
         });
         // geolocation.getCurrentPosition(function (status, result) {
         //     // console.log(status, result)
@@ -419,8 +416,22 @@
         //     //     onError(result)
         //     // }
         // });
-    })
-    ;
+    });
+
+    function autoChangePosition(position) {
+        geocoder.getAddress([position.lng, position.lat], function (status, result2) {
+            //console.log(result, result2)
+            if (status === 'complete' && result2.regeocode) {
+                currentLnglat = position;
+                currentFormattedAddress = result2.regeocode.formattedAddress;
+                document.getElementById("tipinput").value = currentFormattedAddress;
+                document.getElementById('radiusDiv').style = 'display: show;';
+                changeAddressRadius();
+            } else {
+                console.error('根据经纬度查询地址失败')
+            }
+        });
+    }
 
     document.getElementById('dateDom').onchange = selectChange
 

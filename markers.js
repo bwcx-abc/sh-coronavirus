@@ -1,14 +1,15 @@
 var markers = [
     {
-        "asymptomatic": 411,
+        "asymptomatic": 574,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 422,
+        "count": 591,
         "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
         ],
-        "diagnose": 11,
+        "diagnose": 17,
         "name": "浦东新区",
         "dateStat": {
             "2022-03-19": {
@@ -25,6 +26,11 @@ var markers = [
                 "asymptomatic": 219,
                 "count": 220,
                 "diagnose": 1
+            },
+            "2022-03-21": {
+                "asymptomatic": 163,
+                "count": 169,
+                "diagnose": 6
             }
         },
         "position": [
@@ -33,15 +39,16 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 354,
+        "asymptomatic": 466,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 377,
+        "count": 499,
         "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
         ],
-        "diagnose": 23,
+        "diagnose": 33,
         "name": "闵行区",
         "dateStat": {
             "2022-03-19": {
@@ -58,6 +65,11 @@ var markers = [
                 "asymptomatic": 247,
                 "count": 265,
                 "diagnose": 18
+            },
+            "2022-03-21": {
+                "asymptomatic": 112,
+                "count": 122,
+                "diagnose": 10
             }
         },
         "position": [
@@ -66,48 +78,16 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 162,
+        "asymptomatic": 271,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 165,
+        "count": 277,
         "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
         ],
-        "diagnose": 3,
-        "name": "嘉定区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 79,
-                "count": 81,
-                "diagnose": 2
-            },
-            "2022-03-18": {
-                "asymptomatic": 44,
-                "count": 44,
-                "diagnose": 0
-            },
-            "2022-03-20": {
-                "asymptomatic": 39,
-                "count": 40,
-                "diagnose": 1
-            }
-        },
-        "position": [
-            121.265276,
-            31.375566
-        ]
-    },
-    {
-        "asymptomatic": 145,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 147,
-        "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 2,
+        "diagnose": 6,
         "name": "徐汇区",
         "dateStat": {
             "2022-03-19": {
@@ -124,6 +104,11 @@ var markers = [
                 "asymptomatic": 45,
                 "count": 46,
                 "diagnose": 1
+            },
+            "2022-03-21": {
+                "asymptomatic": 126,
+                "count": 130,
+                "diagnose": 4
             }
         },
         "position": [
@@ -132,10 +117,50 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 91,
+        "asymptomatic": 260,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 93,
+        "count": 268,
         "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 8,
+        "name": "嘉定区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 79,
+                "count": 81,
+                "diagnose": 2
+            },
+            "2022-03-18": {
+                "asymptomatic": 44,
+                "count": 44,
+                "diagnose": 0
+            },
+            "2022-03-20": {
+                "asymptomatic": 39,
+                "count": 40,
+                "diagnose": 1
+            },
+            "2022-03-21": {
+                "asymptomatic": 98,
+                "count": 103,
+                "diagnose": 5
+            }
+        },
+        "position": [
+            121.265276,
+            31.375566
+        ]
+    },
+    {
+        "asymptomatic": 140,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 142,
+        "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
@@ -157,6 +182,11 @@ var markers = [
                 "asymptomatic": 40,
                 "count": 42,
                 "diagnose": 2
+            },
+            "2022-03-21": {
+                "asymptomatic": 49,
+                "count": 49,
+                "diagnose": 0
             }
         },
         "position": [
@@ -165,15 +195,94 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 66,
+        "asymptomatic": 122,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 66,
+        "count": 124,
         "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 2,
+        "name": "宝山区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 16,
+                "count": 17,
+                "diagnose": 1
+            },
+            "2022-03-18": {
+                "asymptomatic": 26,
+                "count": 27,
+                "diagnose": 1
+            },
+            "2022-03-20": {
+                "asymptomatic": 13,
+                "count": 13,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 67,
+                "count": 67,
+                "diagnose": 0
+            }
+        },
+        "position": [
+            121.489431,
+            31.405242
+        ]
+    },
+    {
+        "asymptomatic": 103,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 103,
+        "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
         ],
         "diagnose": 0,
+        "name": "静安区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 15,
+                "count": 15,
+                "diagnose": 0
+            },
+            "2022-03-18": {
+                "asymptomatic": 12,
+                "count": 12,
+                "diagnose": 0
+            },
+            "2022-03-20": {
+                "asymptomatic": 32,
+                "count": 32,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 44,
+                "count": 44,
+                "diagnose": 0
+            }
+        },
+        "position": [
+            121.447348,
+            31.227718
+        ]
+    },
+    {
+        "asymptomatic": 96,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 97,
+        "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 1,
         "name": "普陀区",
         "dateStat": {
             "2022-03-19": {
@@ -190,11 +299,88 @@ var markers = [
                 "asymptomatic": 18,
                 "count": 18,
                 "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 30,
+                "count": 31,
+                "diagnose": 1
             }
         },
         "position": [
             121.39547,
             31.249618
+        ]
+    },
+    {
+        "asymptomatic": 75,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 77,
+        "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 2,
+        "name": "松江区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 16,
+                "count": 16,
+                "diagnose": 0
+            },
+            "2022-03-18": {
+                "asymptomatic": 12,
+                "count": 13,
+                "diagnose": 1
+            },
+            "2022-03-20": {
+                "asymptomatic": 9,
+                "count": 9,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 38,
+                "count": 39,
+                "diagnose": 1
+            }
+        },
+        "position": [
+            121.222224,
+            31.006098
+        ]
+    },
+    {
+        "asymptomatic": 72,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 75,
+        "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19"
+        ],
+        "diagnose": 3,
+        "name": "崇明区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 22,
+                "count": 23,
+                "diagnose": 1
+            },
+            "2022-03-20": {
+                "asymptomatic": 12,
+                "count": 12,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 38,
+                "count": 40,
+                "diagnose": 2
+            }
+        },
+        "position": [
+            121.397662,
+            31.623863
         ]
     },
     {
@@ -225,109 +411,11 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 59,
+        "asymptomatic": 60,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 59,
+        "count": 61,
         "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 0,
-        "name": "静安区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 15,
-                "count": 15,
-                "diagnose": 0
-            },
-            "2022-03-18": {
-                "asymptomatic": 12,
-                "count": 12,
-                "diagnose": 0
-            },
-            "2022-03-20": {
-                "asymptomatic": 32,
-                "count": 32,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.447348,
-            31.227718
-        ]
-    },
-    {
-        "asymptomatic": 55,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 57,
-        "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 2,
-        "name": "宝山区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 16,
-                "count": 17,
-                "diagnose": 1
-            },
-            "2022-03-18": {
-                "asymptomatic": 26,
-                "count": 27,
-                "diagnose": 1
-            },
-            "2022-03-20": {
-                "asymptomatic": 13,
-                "count": 13,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.489431,
-            31.405242
-        ]
-    },
-    {
-        "asymptomatic": 37,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 38,
-        "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 1,
-        "name": "松江区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 16,
-                "count": 16,
-                "diagnose": 0
-            },
-            "2022-03-18": {
-                "asymptomatic": 12,
-                "count": 13,
-                "diagnose": 1
-            },
-            "2022-03-20": {
-                "asymptomatic": 9,
-                "count": 9,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.222224,
-            31.006098
-        ]
-    },
-    {
-        "asymptomatic": 37,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 38,
-        "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
@@ -349,6 +437,11 @@ var markers = [
                 "asymptomatic": 12,
                 "count": 12,
                 "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 23,
+                "count": 23,
+                "diagnose": 0
             }
         },
         "position": [
@@ -357,37 +450,11 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 34,
+        "asymptomatic": 57,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 35,
+        "count": 58,
         "dates": [
-            "2022-03-20",
-            "2022-03-19"
-        ],
-        "diagnose": 1,
-        "name": "崇明区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 22,
-                "count": 23,
-                "diagnose": 1
-            },
-            "2022-03-20": {
-                "asymptomatic": 12,
-                "count": 12,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.397662,
-            31.623863
-        ]
-    },
-    {
-        "asymptomatic": 31,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 32,
-        "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
@@ -409,6 +476,11 @@ var markers = [
                 "asymptomatic": 12,
                 "count": 13,
                 "diagnose": 1
+            },
+            "2022-03-21": {
+                "asymptomatic": 26,
+                "count": 26,
+                "diagnose": 0
             }
         },
         "position": [
@@ -417,15 +489,55 @@ var markers = [
         ]
     },
     {
-        "asymptomatic": 29,
+        "asymptomatic": 47,
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 31,
+        "count": 48,
         "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
         ],
-        "diagnose": 2,
+        "diagnose": 1,
+        "name": "奉贤区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 6,
+                "count": 6,
+                "diagnose": 0
+            },
+            "2022-03-18": {
+                "asymptomatic": 7,
+                "count": 7,
+                "diagnose": 0
+            },
+            "2022-03-20": {
+                "asymptomatic": 13,
+                "count": 13,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 21,
+                "count": 22,
+                "diagnose": 1
+            }
+        },
+        "position": [
+            121.473945,
+            30.918406
+        ]
+    },
+    {
+        "asymptomatic": 44,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 47,
+        "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 3,
         "name": "金山区",
         "dateStat": {
             "2022-03-19": {
@@ -442,11 +554,55 @@ var markers = [
                 "asymptomatic": 11,
                 "count": 11,
                 "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 15,
+                "count": 16,
+                "diagnose": 1
             }
         },
         "position": [
             121.341774,
             30.742769
+        ]
+    },
+    {
+        "asymptomatic": 40,
+        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        "count": 40,
+        "dates": [
+            "2022-03-21",
+            "2022-03-20",
+            "2022-03-19",
+            "2022-03-18"
+        ],
+        "diagnose": 0,
+        "name": "杨浦区",
+        "dateStat": {
+            "2022-03-19": {
+                "asymptomatic": 14,
+                "count": 14,
+                "diagnose": 0
+            },
+            "2022-03-18": {
+                "asymptomatic": 8,
+                "count": 8,
+                "diagnose": 0
+            },
+            "2022-03-20": {
+                "asymptomatic": 8,
+                "count": 8,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 10,
+                "count": 10,
+                "diagnose": 0
+            }
+        },
+        "position": [
+            121.525409,
+            31.259588
         ]
     },
     {
@@ -505,72 +661,7 @@ var markers = [
         "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
         "count": 30,
         "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 0,
-        "name": "杨浦区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 14,
-                "count": 14,
-                "diagnose": 0
-            },
-            "2022-03-18": {
-                "asymptomatic": 8,
-                "count": 8,
-                "diagnose": 0
-            },
-            "2022-03-20": {
-                "asymptomatic": 8,
-                "count": 8,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.525409,
-            31.259588
-        ]
-    },
-    {
-        "asymptomatic": 26,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 26,
-        "dates": [
-            "2022-03-20",
-            "2022-03-19",
-            "2022-03-18"
-        ],
-        "diagnose": 0,
-        "name": "奉贤区",
-        "dateStat": {
-            "2022-03-19": {
-                "asymptomatic": 6,
-                "count": 6,
-                "diagnose": 0
-            },
-            "2022-03-18": {
-                "asymptomatic": 7,
-                "count": 7,
-                "diagnose": 0
-            },
-            "2022-03-20": {
-                "asymptomatic": 13,
-                "count": 13,
-                "diagnose": 0
-            }
-        },
-        "position": [
-            121.473945,
-            30.918406
-        ]
-    },
-    {
-        "asymptomatic": 25,
-        "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-        "count": 25,
-        "dates": [
+            "2022-03-21",
             "2022-03-20",
             "2022-03-19",
             "2022-03-18"
@@ -591,6 +682,11 @@ var markers = [
             "2022-03-20": {
                 "asymptomatic": 4,
                 "count": 4,
+                "diagnose": 0
+            },
+            "2022-03-21": {
+                "asymptomatic": 5,
+                "count": 5,
                 "diagnose": 0
             }
         },
@@ -40937,6 +41033,344 @@ var markerDate = {
             "position": [
                 121.349234,
                 31.170539
+            ]
+        }
+    ],
+    "2022-03-21": [
+        {
+            "asymptomatic": 163,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 169,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 6,
+            "name": "浦东新区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 163,
+                    "count": 169,
+                    "diagnose": 6
+                }
+            },
+            "position": [
+                121.544346,
+                31.221461
+            ]
+        },
+        {
+            "asymptomatic": 126,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 130,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 4,
+            "name": "徐汇区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 126,
+                    "count": 130,
+                    "diagnose": 4
+                }
+            },
+            "position": [
+                121.436307,
+                31.188334
+            ]
+        },
+        {
+            "asymptomatic": 112,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 122,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 10,
+            "name": "闵行区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 112,
+                    "count": 122,
+                    "diagnose": 10
+                }
+            },
+            "position": [
+                121.380857,
+                31.112834
+            ]
+        },
+        {
+            "asymptomatic": 98,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 103,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 5,
+            "name": "嘉定区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 98,
+                    "count": 103,
+                    "diagnose": 5
+                }
+            },
+            "position": [
+                121.265276,
+                31.375566
+            ]
+        },
+        {
+            "asymptomatic": 67,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 67,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "宝山区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 67,
+                    "count": 67,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.489431,
+                31.405242
+            ]
+        },
+        {
+            "asymptomatic": 49,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 49,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "黄浦区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 49,
+                    "count": 49,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.48442,
+                31.231661
+            ]
+        },
+        {
+            "asymptomatic": 44,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 44,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "静安区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 44,
+                    "count": 44,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.447348,
+                31.227718
+            ]
+        },
+        {
+            "asymptomatic": 38,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 40,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 2,
+            "name": "崇明区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 38,
+                    "count": 40,
+                    "diagnose": 2
+                }
+            },
+            "position": [
+                121.397662,
+                31.623863
+            ]
+        },
+        {
+            "asymptomatic": 38,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 39,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 1,
+            "name": "松江区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 38,
+                    "count": 39,
+                    "diagnose": 1
+                }
+            },
+            "position": [
+                121.222224,
+                31.006098
+            ]
+        },
+        {
+            "asymptomatic": 30,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 31,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 1,
+            "name": "普陀区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 30,
+                    "count": 31,
+                    "diagnose": 1
+                }
+            },
+            "position": [
+                121.39547,
+                31.249618
+            ]
+        },
+        {
+            "asymptomatic": 26,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 26,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "长宁区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 26,
+                    "count": 26,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.424751,
+                31.220537
+            ]
+        },
+        {
+            "asymptomatic": 23,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 23,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "虹口区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 23,
+                    "count": 23,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.504994,
+                31.264917
+            ]
+        },
+        {
+            "asymptomatic": 21,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 22,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 1,
+            "name": "奉贤区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 21,
+                    "count": 22,
+                    "diagnose": 1
+                }
+            },
+            "position": [
+                121.473945,
+                30.918406
+            ]
+        },
+        {
+            "asymptomatic": 15,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 16,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 1,
+            "name": "金山区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 15,
+                    "count": 16,
+                    "diagnose": 1
+                }
+            },
+            "position": [
+                121.341774,
+                30.742769
+            ]
+        },
+        {
+            "asymptomatic": 10,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            "count": 10,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "杨浦区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 10,
+                    "count": 10,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.525409,
+                31.259588
+            ]
+        },
+        {
+            "asymptomatic": 5,
+            "icon": "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-5.png",
+            "count": 5,
+            "dates": [
+                "2022-03-21"
+            ],
+            "diagnose": 0,
+            "name": "青浦区",
+            "dateStat": {
+                "2022-03-21": {
+                    "asymptomatic": 5,
+                    "count": 5,
+                    "diagnose": 0
+                }
+            },
+            "position": [
+                121.124249,
+                31.15098
             ]
         }
     ],
