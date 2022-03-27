@@ -51,6 +51,8 @@
     width: 200px;border: 1px solid #ced4da;border-radius: 0.25rem;height: calc(2.2rem + 2px);">
             <option value="">选择指定日期</option>
         </select>
+
+        包含未知： <input type="checkbox" id="unknown" onclick="selectChange(this)"/>
     </div>
     <div class="input-item">
         <a href="index.html">查看分布地图</a>
@@ -81,7 +83,9 @@
         dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
     });
 
-    document.getElementById('dateDom').onchange = function () {
+    document.getElementById('dateDom').onchange = selectChange;
+
+    function selectChange() {
         var date = document.getElementById('dateDom').value;
         if (!date) {
             changeData(window);
@@ -148,6 +152,19 @@
             }]
         }, true);
         //
+        var ageX = JSON.parse(JSON.stringify(data['ageStatX']));
+
+        var ageY = JSON.parse(JSON.stringify(data['ageStatY']));
+
+        var unknown = document.getElementById('unknown').checked;
+
+        var unknownIndex = ageX.indexOf('未知');
+
+        if (!unknown && unknownIndex !== -1) {
+            ageX.splice(unknownIndex, 1);
+            ageY.splice(unknownIndex, 1);
+        }
+
         ageStatEcharts.setOption({
             title: {
                 text: '年龄统计',
@@ -170,13 +187,13 @@
             },
             xAxis: {
                 type: 'category',
-                data: data['ageStatX']
+                data: ageX
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: data['ageStatY'],
+                data: ageY,
                 type: 'bar',
                 showBackground: true,
                 backgroundStyle: {
@@ -209,7 +226,9 @@
                     name: '性别',
                     type: 'pie',
                     radius: '50%',
-                    data: data['sexStat'],
+                    data: data['sexStat'].filter(item => {
+                        return unknown || item.name !== '未知'
+                    }),
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -289,7 +308,7 @@
                 }
             },
             legend: {
-                data: ['病例数', '确诊数', '无症状数', '涉及场所']
+                data: ['病例数', '确诊数', '无症状数', '涉及场所', '未管控']
             },
             yAxis: [{
                 type: 'value'
@@ -311,6 +330,10 @@
                     name: '涉及场所',
                     type: 'line',
                     data: data['dateAddressY'],
+                }, {
+                    name: '未管控',
+                    type: 'line',
+                    data: data['dateNotControlledY'],
                 }
             ]
         });
