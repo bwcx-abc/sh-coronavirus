@@ -202,8 +202,8 @@
     var lngLatMap = {};
     var style = [{
         url: iconBase64,
-        anchor: new AMap.Pixel(11, 30),
-        size: new AMap.Size(30, 30),
+        anchor: new AMap.Pixel(6, 20),
+        size: new AMap.Size(20, 20),
         zIndex: 1,
     }];
     // https://a.amap.com/jsapi_demos/static/images/mass0.png
@@ -351,6 +351,8 @@
             circle.hide();
             currentMarker.hide();
             document.getElementById('radiusDiv').style = 'display: none;';
+            currentFormattedAddress = '';
+            currentLnglat = null;
             return;
         }
         document.getElementById('radiusDiv').style = 'display: show;';
