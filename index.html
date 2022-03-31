@@ -117,7 +117,7 @@
     <div class="input-item">
         指定日期：
         <select id="dateDom">
-            <option value="">选择指定日期</option>
+            <option value="">选择指定日期(03-06起)</option>
         </select>
     </div>
     <!--    <div class="input-item" id="onlyDateDiv" style="display: none">-->
@@ -161,6 +161,9 @@
     allDates.forEach(function (dateItem) {
         dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
     });
+    //
+    document.getElementById('dateDom').value = '28号后';
+    //
     //
     var scale = new AMap.Scale({
             visible: true
