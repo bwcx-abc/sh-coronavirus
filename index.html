@@ -117,7 +117,7 @@
     <div class="input-item">
         指定日期：
         <select id="dateDom">
-            <option value="">选择指定日期(03-06起)</option>
+            <option value="">查看全部(03-06起)</option>
         </select>
     </div>
     <!--    <div class="input-item" id="onlyDateDiv" style="display: none">-->
@@ -158,11 +158,19 @@
     var dateDom = document.getElementById('dateDom');
     allDates.sort();
     allDates.reverse();
+    var dateAll = [];
     allDates.forEach(function (dateItem) {
         dateDom.innerHTML += ' <option value="' + dateItem + '">' + dateItem + '</option>';
+        if (dateItem.includes('2022-')) {
+            dateAll.push(dateItem);
+        }
     });
+    var auoPlay = getQueryVariable('auoPlay');
     //
     document.getElementById('dateDom').value = '28号后';
+    if (auoPlay) {
+        document.getElementById('dateDom').value = dateAll[dateAll.length - 1];
+    }
     //
     //
     var scale = new AMap.Scale({
@@ -213,7 +221,7 @@
 
     // var diagnose = getQueryVariable('diagnose');
     // var onlyDate = getQueryVariable('onlyDate');
-    var dataArray = parseDateDataArray('');
+    var dataArray = auoPlay ? [] : parseDateDataArray('');
 
     // console.log(dataArray)
     var mass = new AMap.MassMarks(dataArray, {
@@ -222,6 +230,40 @@
         cursor: 'pointer',
         style: style
     });
+    if (auoPlay) {
+        // 自动播放模式
+        var allDataArray = [];
+        var allDataMap = {};
+
+        function addByIndex(index) {
+            var addDate = dateAll[index];
+            // console.log(addDate);
+            document.getElementById('dateDom').value = addDate;
+            allDataArray = allDataArray.concat(parseDateDataArray2(addDate).filter(function (item) {
+                var key = item.lnglat[0] + '-' + item.lnglat[1];
+                if (allDataMap[key]) {
+                    return false;
+                }
+                allDataMap[key] = item;
+                return true;
+            }));
+            mass.setData(allDataArray);
+        }
+
+        let i = dateAll.length - 1;
+        timeoutLoop();
+
+        // 定时更新
+        function timeoutLoop() {
+            setTimeout(function () {
+                addByIndex(i);
+                if (i-- === 0) {
+                    return;
+                }
+                timeoutLoop();
+            }, auoPlay);
+        }
+    }
 
     var marker = new AMap.Marker({content: ' ', map: map});
 
@@ -244,6 +286,9 @@
     function massEvent(e) {
         marker.setPosition(e.data.lnglat);
         var allArray = lngLatMap[e.data.lnglat[0] + '-' + e.data.lnglat[1]];
+        if (!allArray) {
+            allArray = [e.data.marker];
+        }
         // console.log(allArray);
         var itemHtmls = [];
         for (let i = 0; i < allArray.length; i++) {
@@ -461,20 +506,30 @@
 
 
     function parseDateDataArray() {
-        let dataArray = [];
+
         lngLatMap = {};
         var date = document.getElementById('dateDom').value;
+        let dataArray = parseDateDataArray2(date);
+        for (let i = 0; i < dataArray.length; i++) {
+            var marker = dataArray[i];
+            var key = marker.lnglat[0] + '-' + marker.lnglat[1];
+            var cacheArray = lngLatMap[key] || [];
+            cacheArray.push(marker.marker);
+            lngLatMap[key] = cacheArray;
+
+        }
+        return dataArray;
+    }
+
+    function parseDateDataArray2(date) {
+        let dataArray = [];
         var markersArray = date ? markerDate[date] : markers;
         for (let i = 0; i < markersArray.length; i++) {
             var marker = markersArray[i];
-            var key = marker.position[0] + '-' + marker.position[1];
-            var cacheArray = lngLatMap[key] || [];
-            cacheArray.push(marker);
-            lngLatMap[key] = cacheArray;
             dataArray.push({
                 lnglat: marker.position,
                 name: marker.name,
-                // dates: marker.dates,
+                marker: marker,
                 style: 1
             })
         }
@@ -485,6 +540,18 @@
     function updateRadius() {
         document.getElementById("radiusText").innerText = document.getElementById("radius").value;
         changeAddressRadius();
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
     }
 </script>
 <script>
